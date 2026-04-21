@@ -11,7 +11,7 @@ defineOptions({
         breadcrumbs: [
             {
                 title: 'User',
-                href: route('users.index'),
+                href: route('admin.users.index'),
             },
         ],
     },

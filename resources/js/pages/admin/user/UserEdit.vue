@@ -126,7 +126,7 @@ watch(open, (value) => {
 });
 
 const submit = () => {
-    form.put(route('users.update', props.user.id), {
+    form.put(route('admin.users.update', props.user.id), {
         preserveScroll: true,
         onSuccess: () => {
             open.value = false;

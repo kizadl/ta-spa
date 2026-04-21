@@ -41,7 +41,7 @@ const props = defineProps<{
 const deleteUser = () => {
     isDeleting.value = true;
 
-    router.delete(route('users.destroy', props.userId), {
+    router.delete(route('admin.users.destroy', props.userId), {
         preserveScroll: true,
         onSuccess: () => {
             open.value = false;

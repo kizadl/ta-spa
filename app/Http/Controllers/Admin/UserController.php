@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\User;
@@ -17,7 +18,7 @@ class UserController extends Controller
     {
         //
         $user = User::paginate(10);
-        return Inertia::render('user/UserIndex', [
+        return Inertia::render('admin/user/UserIndex', [
             'users' => $user,
         ]);
     }
@@ -28,7 +29,7 @@ class UserController extends Controller
     public function create()
     {
         //
-        return Inertia::render('user/UserCreate');
+        return Inertia::render('admin/user/UserCreate');
     }
 
     /**
@@ -53,7 +54,7 @@ class UserController extends Controller
 
             DB::commit();
 
-            return redirect()->route('users.index')->with('success', 'User berhasil ditambahkan.');
+            return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan.');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Gagal menambahkan user: ' . $e->getMessage());
@@ -75,7 +76,7 @@ class UserController extends Controller
     {
         //
         $user = User::findOrFail($id);
-        return Inertia::render('user/UserEdit', [
+        return Inertia::render('admin/user/UserEdit', [
             'user' => $user,
         ]);
     }
@@ -110,7 +111,7 @@ class UserController extends Controller
 
             DB::commit();
 
-            return redirect()->route('users.index')->with('success', 'User berhasil diupdate.');
+            return redirect()->route('admin.users.index')->with('success', 'User berhasil diupdate.');
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Gagal mengupdate user: ' . $e->getMessage());
@@ -126,7 +127,7 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
             $user->delete();
-            return redirect()->route('users.index')->with('success', 'User berhasil dihapus.');
+            return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Gagal menghapus user: ' . $e->getMessage());
         }

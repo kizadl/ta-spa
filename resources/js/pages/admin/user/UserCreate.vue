@@ -107,7 +107,7 @@ const form = useForm({
 });
 
 const submit = () => {
-    form.post(route('users.store'), {
+    form.post(route('admin.users.store'), {
         preserveScroll: true,
         onSuccess: () => {
             form.reset();
