@@ -5,10 +5,10 @@
     >
       <!-- Logo -->
       <a href="#" class="flex items-center gap-2">
-        <div class="w-8 h-8 rounded-lg bg-white flex items-center justify-center">
-          <span class="text-zinc-950 font-bold text-sm">A</span>
+        <div class="w-8 h-8 rounded-lg bg-emerald-500 flex items-center justify-center">
+          <span class="text-zinc-950 font-bold text-sm">GB</span>
         </div>
-        <span class="font-semibold text-white hidden sm:block">Apex</span>
+        <span class="font-semibold text-white hidden sm:block">GREENS</span>
       </a>
 
       <!-- Desktop Nav Items -->
@@ -31,16 +31,18 @@
 
       <!-- CTA Buttons -->
       <div class="hidden md:flex items-center gap-3">
-        <button
+        <Link
+          href="/login"
           class="px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
         >
-          Sign In
-        </button>
-        <button
-          class="shimmer-btn bg-white text-zinc-950 hover:bg-zinc-200 rounded-full px-4 py-2 text-sm font-medium"
+          Masuk
+        </Link>
+        <Link
+          href="/register"
+          class="shimmer-btn bg-emerald-500 text-zinc-950 hover:bg-emerald-400 rounded-full px-4 py-2 text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all active:scale-95"
         >
-          Get Started
-        </button>
+          Daftar
+        </Link>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -69,14 +71,16 @@
             {{ item.label }}
           </a>
           <hr class="border-zinc-800 my-2" />
-          <button class="px-4 py-3 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors text-left">
-            Sign In
-          </button>
-          <button
-            class="shimmer-btn bg-white text-zinc-950 hover:bg-zinc-200 rounded-full px-4 py-2 text-sm font-medium w-full"
+          <Link href="/login" class="px-4 py-3 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors text-left" @click="mobileMenuOpen = false">
+            Masuk
+          </Link>
+          <Link
+            href="/register"
+            class="shimmer-btn bg-emerald-500 text-zinc-950 hover:bg-emerald-400 rounded-full px-4 py-3 text-sm font-bold text-center shadow-lg shadow-emerald-500/20"
+            @click="mobileMenuOpen = false"
           >
-            Get Started
-          </button>
+            Daftar
+          </Link>
         </div>
       </div>
     </nav>
@@ -86,12 +90,13 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Menu, X } from 'lucide-vue-next'
+import { Link } from '@inertiajs/vue3'
 
 const navItems = [
-  { label: 'Features', href: '#features' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Docs', href: '#docs' },
-  { label: 'Blog', href: '#blog' },
+  { label: 'Klasifikasi', href: '#klasifikasi' },
+  { label: 'Keunggulan', href: '#keunggulan' },
+  { label: 'Teknologi', href: '#technology' },
+  { label: 'F.A.Q', href: '#faq' },
 ]
 
 const hoveredIndex = ref<number | null>(null)

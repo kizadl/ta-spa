@@ -3,6 +3,8 @@ import { Head } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
 import PlaceholderPattern from '@/components/PlaceholderPattern.vue';
 import { Card } from '@/components/ui/card';
+import { User } from '@/types';
+
 
 defineOptions({
     layout: {

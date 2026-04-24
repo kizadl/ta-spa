@@ -12,8 +12,8 @@ import { Spinner } from '@/components/ui/spinner';
 
 defineOptions({
     layout: {
-        title: 'Log in to your account',
-        description: 'Enter your email and password below to log in',
+        title: 'Masuk ke Akun Anda',
+        description: 'Masukkan email dan kata sandi Anda di bawah ini',
     },
 });
 
@@ -25,11 +25,11 @@ defineProps<{
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head title="Masuk" />
 
     <div
         v-if="status"
-        class="mb-4 text-center text-sm font-medium text-green-600"
+        class="mb-4 text-center text-sm font-medium text-emerald-500"
     >
         {{ status }}
     </div>
@@ -42,7 +42,7 @@ defineProps<{
     >
         <div class="grid gap-6">
             <div class="grid gap-2">
-                <Label for="email">Email address</Label>
+                <Label for="email" class="text-zinc-300">Alamat Email</Label>
                 <Input
                     id="email"
                     type="email"
@@ -51,21 +51,22 @@ defineProps<{
                     autofocus
                     :tabindex="1"
                     autocomplete="email"
-                    placeholder="email@example.com"
+                    placeholder="email@contoh.com"
+                    class="bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus-visible:ring-emerald-500"
                 />
                 <InputError :message="errors.email" />
             </div>
 
             <div class="grid gap-2">
                 <div class="flex items-center justify-between">
-                    <Label for="password">Password</Label>
+                    <Label for="password" class="text-zinc-300">Kata Sandi</Label>
                     <TextLink
                         v-if="canResetPassword"
                         :href="route('password.request')"
-                        class="text-sm"
+                        class="text-sm text-emerald-500 hover:text-emerald-400"
                         :tabindex="5"
                     >
-                        Forgot password?
+                        Lupa kata sandi?
                     </TextLink>
                 </div>
                 <PasswordInput
@@ -74,36 +75,37 @@ defineProps<{
                     required
                     :tabindex="2"
                     autocomplete="current-password"
-                    placeholder="Password"
+                    placeholder="Kata Sandi"
+                    class="bg-zinc-950 border-zinc-800 text-white placeholder:text-zinc-600 focus-visible:ring-emerald-500"
                 />
                 <InputError :message="errors.password" />
             </div>
 
             <div class="flex items-center justify-between">
-                <Label for="remember" class="flex items-center space-x-3">
-                    <Checkbox id="remember" name="remember" :tabindex="3" />
-                    <span>Remember me</span>
+                <Label for="remember" class="flex items-center space-x-3 text-zinc-300 cursor-pointer">
+                    <Checkbox id="remember" name="remember" :tabindex="3" class="border-zinc-600 data-[state=checked]:bg-emerald-500 data-[state=checked]:border-emerald-500 data-[state=checked]:text-zinc-950" />
+                    <span class="text-sm">Ingat saya</span>
                 </Label>
             </div>
 
             <Button
                 type="submit"
-                class="mt-4 w-full"
+                class="mt-4 w-full bg-emerald-500 text-zinc-950 hover:bg-emerald-400 font-bold transition-all"
                 :tabindex="4"
                 :disabled="processing"
                 data-test="login-button"
             >
-                <Spinner v-if="processing" />
-                Log in
+                <Spinner v-if="processing" class="mr-2" />
+                Masuk
             </Button>
         </div>
 
         <div
-            class="text-center text-sm text-muted-foreground"
+            class="text-center text-sm text-zinc-400"
             v-if="canRegister"
         >
-            Don't have an account?
-            <TextLink :href="route('register')" :tabindex="5">Sign up</TextLink>
+            Belum punya akun?
+            <TextLink :href="route('register')" :tabindex="5" class="text-emerald-500 hover:text-emerald-400 font-medium ml-1">Daftar sekarang</TextLink>
         </div>
     </Form>
 </template>

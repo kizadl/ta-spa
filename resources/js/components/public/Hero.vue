@@ -16,19 +16,18 @@
       <!-- Badge -->
       <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-zinc-900 border border-zinc-800 mb-8">
         <span class="w-2 h-2 rounded-full bg-emerald-500 pulse-glow" />
-        <span class="text-sm text-zinc-400">Now in Public Beta</span>
+        <span class="text-sm text-zinc-400">GREENS</span>
       </div>
 
       <!-- Headline -->
       <h1 class="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white mb-6 font-display">
-        <span class="block">Ship faster.</span>
-        <span class="block text-zinc-500">Scale smarter.</span>
+        <span class="block">Klasifikasi</span>
+        <span class="block text-zinc-500">Biji Hijau Kopi</span>
       </h1>
 
       <!-- Subheadline -->
       <p class="text-lg sm:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
-        The modern platform for teams who ship fast. Built for scale, designed for speed. Everything you need to build,
-        deploy, and grow.
+        Klasifikasi Biji Hijau Kopi adalah sebuah sistem yang menggunakan Kecerdasan Buatan (AI) untuk mengklasifikasikan biji hijau kopi berdasarkan Proses Pasca Panennya
       </p>
 
       <!-- CTAs -->
@@ -36,14 +35,14 @@
         <button
           class="shimmer-btn bg-white text-zinc-950 hover:bg-zinc-200 rounded-full px-8 py-3 text-base font-medium shadow-lg shadow-white/10 flex items-center gap-2"
         >
-          Start Building
+          Mulai Klasifikasi
           <ArrowRight :size="16" />
         </button>
-        <button
+        <!-- <button
           class="rounded-full px-8 py-3 text-base font-medium border border-zinc-800 text-zinc-300 hover:bg-zinc-900 hover:text-white hover:border-zinc-700 bg-transparent"
         >
           View Demo
-        </button>
+        </button> -->
       </div>
 
       <!-- Social Proof -->
@@ -58,7 +57,7 @@
           />
         </div>
         <p class="text-sm text-zinc-500">
-          Trusted by <span class="text-zinc-300 font-medium">2,000+</span> teams worldwide
+          Telah digunakan oleh <span class="text-zinc-300 font-medium">2,000+</span> orang
         </p>
       </div>
     </div>

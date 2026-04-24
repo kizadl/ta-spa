@@ -70,6 +70,7 @@
   color utility to any element that depends on these defaults.
 */
 @layer base {
+
     *,
     ::after,
     ::before,
@@ -80,12 +81,14 @@
 }
 
 @layer utilities {
+
     body,
     html {
         --font-sans:
             'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
             'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
             'Noto Color Emoji';
+
     }
 }
 
@@ -166,7 +169,41 @@
     * {
         @apply border-border outline-ring/50;
     }
+
     body {
         @apply bg-background text-foreground;
     }
+}
+
+/* 1. Membuat scroll halus untuk seluruh halaman */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 2. Opsional: Mengatur jarak berhenti scroll agar tidak tertutup Navbar */
+/* Jika kamu punya section dengan ID, beri jarak atas 5rem (80px) */
+section,
+[id] {
+    scroll-margin-top: 5rem;
+}
+
+/* 3. Membuat scrollbar terlihat lebih estetik (cocok dengan tema gelapmu) */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #09090b;
+    /* Warna zinc-950 */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #27272a;
+    /* Warna zinc-800 */
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #f97316;
+    /* Warna orange-500 saat dihover */
 }

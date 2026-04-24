@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 import { route } from 'ziggy-js';
-import AppLogoIcon from '@/components/AppLogoIcon.vue';
 
 defineProps<{
     title?: string;
@@ -11,7 +10,7 @@ defineProps<{
 
 <template>
     <div
-        class="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10"
+        class="flex min-h-svh flex-col items-center justify-center gap-6 bg-black p-6 md:p-10 text-white"
     >
         <div class="w-full max-w-sm">
             <div class="flex flex-col gap-8">
@@ -21,22 +20,23 @@ defineProps<{
                         class="flex flex-col items-center gap-2 font-medium"
                     >
                         <div
-                            class="mb-1 flex h-9 w-9 items-center justify-center rounded-md"
+                            class="mb-1 flex h-12 w-12 items-center justify-center rounded-xl bg-emerald-500 shadow-lg shadow-emerald-500/20"
                         >
-                            <AppLogoIcon
-                                class="size-9 fill-current text-[var(--foreground)] dark:text-white"
-                            />
+                            <span class="text-zinc-950 font-bold text-xl">GB</span>
                         </div>
+                        <span class="font-semibold text-white text-xl tracking-wider">GREENS</span>
                         <span class="sr-only">{{ title }}</span>
                     </Link>
-                    <div class="space-y-2 text-center">
-                        <h1 class="text-xl font-medium">{{ title }}</h1>
-                        <p class="text-center text-sm text-muted-foreground">
+                    <div class="space-y-2 text-center mt-4">
+                        <h1 class="text-2xl font-bold">{{ title }}</h1>
+                        <p class="text-center text-sm text-zinc-400">
                             {{ description }}
                         </p>
                     </div>
                 </div>
-                <slot />
+                <div class="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl shadow-2xl">
+                    <slot />
+                </div>
             </div>
         </div>
     </div>
