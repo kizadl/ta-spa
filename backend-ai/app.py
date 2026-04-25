@@ -27,11 +27,9 @@ try:
         compile=False,
         safe_mode=False  # Kunci agar Keras 3 mau menerima config Keras lama
     )
-    print("✅ BERHASIL: Model AI siap digunakan!")
+    print("BERHASIL: Model AI readyy!")
 except Exception as e:
-    print(f"❌ GAGAL: {str(e)}")
-    print("--- SOLUSI ---")
-    print("Jika error 'Unrecognized keyword arguments', silakan info ke saya.")
+    print(f"GAGAL: {str(e)}")
 
 # Label klasifikasi kopi kamu
 labels = ['Honey', 'Natural', 'Washed']
