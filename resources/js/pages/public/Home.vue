@@ -2,10 +2,10 @@
   <div class="bg-background text-foreground min-h-screen">
     <Navbar />
     <Hero />
-    <LogoMarquee />
-    <BentoGrid />
-    <Kelebihan />
-    <Pricing />
+    <Logo />
+    <Scanner  />
+    <Keunggulan />
+    <Teknologi />
     <FAQ />
     <FinalCta />
     <Footer/>
@@ -15,10 +15,10 @@
 <script setup lang="ts">
 import Navbar from '@/components/public/Navbar.vue'
 import Hero from '@/components/public/Hero.vue'
-import LogoMarquee from '@/components/public/LogoMarquee.vue'
-import Kelebihan from '@/components/public/kelebihan.vue'
-import BentoGrid from '@/components/public/BentoGrid.vue'
-import Pricing from '@/components/public/Pricing.vue'
+import Logo from '@/components/public/Logo.vue'
+import Keunggulan from '@/components/public/Keunggulan.vue' 
+import Scanner from '@/components/public/Scanner.vue'
+import Teknologi from '@/components/public/Teknologi.vue' 
 import FAQ from '@/components/public/FAQ.vue'
 import FinalCta from '@/components/public/FinalCta.vue'
 </script>

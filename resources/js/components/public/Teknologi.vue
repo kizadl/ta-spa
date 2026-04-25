@@ -54,7 +54,7 @@ import { Check } from 'lucide-vue-next'
 const technologies = [
   {
     name: 'Convolutional Neural Network',
-    badge: 'Algoritma AI',
+    badge: 'Algoritma',
     description: 'Metode Deep Learning mutakhir yang secara khusus dirancang untuk memproses dan menganalisis data visual dengan meniru cara kerja korteks visual manusia.',
     features: [
       'Mampu mengenali pola spasial pada tekstur dan warna biji kopi',
@@ -77,16 +77,16 @@ const technologies = [
     highlighted: true,
   },
   {
-  name: 'Klasifikasi Pasca-Panen',
-  badge: 'AI Recognition',
-  description: 'Implementasi model CNN yang dilatih secara khusus untuk membedakan karakteristik morfologi dan visual pada tiga metode pemrosesan kopi utama.',
+  name: 'TensorFlow.js & WebGL',
+  badge: 'Deployment',
+  description: 'Infrastruktur runtime yang memungkinkan model AI dijalankan secara native di sisi klien menggunakan akselerasi perangkat keras tanpa bergantung pada server backend.',
   features: [
-    'Identifikasi akurat untuk proses Natural, Honey, dan Wash',
-    'Analisis tekstur dan gradasi warna biji kopi secara mendalam',
-    'Inference real-time dengan latensi rendah di browser',
-    'Optimasi akurasi berdasarkan varietas Arabika Bondowoso'
+    'Komputasi paralel menggunakan WebGL (GPU Acceleration)',
+    'Zero-latency inference (Prediksi instan tanpa jeda jaringan)',
+    'Data Privacy: Pemrosesan foto dilakukan 100% lokal di browser',
+    'Konversi model format .keras ke format JSON teroptimasi'
   ],
-  highlighted: false, 
+  highlighted: false,
 },
 ]
 </script>
