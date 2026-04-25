@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { Link } from '@inertiajs/vue3';
+import { Link, usePage } from '@inertiajs/vue3';
+import { computed } from 'vue';
 import { route } from 'ziggy-js';
 import { BookOpen, FolderGit2, LayoutGrid, Users } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
+
 import {
     Sidebar,
     SidebarContent,
@@ -17,18 +19,34 @@ import {
 } from '@/components/ui/sidebar';
 import type { NavItem } from '@/types';
 
-const mainNavItems: NavItem[] = [
+const page = usePage();
+// Ambil data user dari auth yang dikirim via HandleInertiaRequests
+const user = computed(() => page.props.auth.user);
+
+// 1. Definisikan semua menu, tambahkan properti 'role' untuk menu yang dibatasi
+const allNavItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: route('admin.dashboard'),
         icon: LayoutGrid,
     },
     {
-        title: 'Users',
+        title: 'Users Management',
         href: route('admin.users.index'),
         icon: Users,
+        role: 'admin', // Hanya untuk admin
     },
 ];
+
+// 2. Filter menu berdasarkan role user yang sedang login
+const filteredNavItems = computed(() => {
+    return allNavItems.filter(item => {
+        // Jika menu tidak punya batasan role, tampilkan untuk semua
+        if (!item.role) return true;
+        // Jika ada batasan role, cek apakah role user cocok (admin === admin)
+        return item.role === user.value?.role;
+    });
+});
 
 const footerNavItems: NavItem[] = [
     {
@@ -59,7 +77,7 @@ const footerNavItems: NavItem[] = [
         </SidebarHeader>
 
         <SidebarContent>
-            <NavMain :items="mainNavItems" />
+            <NavMain :items="filteredNavItems" />
         </SidebarContent>
 
         <SidebarFooter>
