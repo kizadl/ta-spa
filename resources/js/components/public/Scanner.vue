@@ -98,6 +98,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { router } from '@inertiajs/vue3'
+import { route } from 'ziggy-js'
 import { Upload, Plus, X, Loader2, Bean } from 'lucide-vue-next'
 
 const imagePreview = ref<string | null>(null)
@@ -128,26 +130,36 @@ const startClassification = async () => {
   formData.append('image', selectedFile.value)
 
   try {
-    const response = await fetch('http://127.0.0.1:5001/predict', {
+    const response = await fetch('/predict', {
       method: 'POST',
-      body: formData
+      body: formData,
+      headers: {
+        'X-CSRF-TOKEN': (document.querySelector('meta[name="csrf-token"]') as HTMLMetaElement)?.content || ''
+      }
     })
     
-    if (!response.ok) throw new Error("Gagal terhubung ke AI server")
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || "Gagal melakukan klasifikasi")
+    }
     
     const data = await response.json()
-    // Pastikan data yang dikirim Flask sesuai (label & confidence)
     predictionResult.value = {
       label: data.label,
       confidence: data.confidence
     }
-  } catch (error) {
-    alert("Error: Pastikan backend-ai sudah dijalankan (python app.py)")
+
+    // Refresh data jika di Inertia context (dashboard)
+    if (typeof route === 'function' && route().current('classifications.index')) {
+      router.reload({ only: ['classifications'] })
+    }
+  } catch (error: any) {
     console.error(error)
   } finally {
     isLoading.value = false
   }
 }
+
 
 const clearImage = () => {
   imagePreview.value = null

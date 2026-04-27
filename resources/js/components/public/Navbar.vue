@@ -31,18 +31,37 @@
 
       <!-- CTA Buttons -->
       <div class="hidden md:flex items-center gap-3">
-        <Link
-          href="/login"
-          class="px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
-        >
-          Masuk
-        </Link>
-        <Link
-          href="/register"
-          class="shimmer-btn bg-emerald-500 text-zinc-950 hover:bg-emerald-400 rounded-full px-4 py-2 text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all active:scale-95"
-        >
-          Daftar
-        </Link>
+        <div v-if="user">
+          <Link
+            href="/dashboard"
+            class="px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+          >
+            Dashboard
+          </Link>
+          <Link
+            class="shimmer-btn bg-red-500 text-zinc-950 hover:bg-red-400 rounded-full px-4 py-2 text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all active:scale-95 inline-flex items-center"
+            :href="route('logout')"
+            method="post"
+            @click="handleLogout"
+          >
+            <LogOut class="mr-2 h-4 w-4" />
+            Log out
+          </Link>
+        </div>
+        <div v-else>
+          <Link
+            href="/login"
+            class="px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded-lg transition-colors"
+          >
+            Masuk
+          </Link>
+          <Link
+            href="/register"
+            class="shimmer-btn bg-emerald-500 text-zinc-950 hover:bg-emerald-400 rounded-full px-4 py-2 text-sm font-bold shadow-lg shadow-emerald-500/20 transition-all active:scale-95"
+          >
+            Daftar
+          </Link>
+        </div>
       </div>
 
       <!-- Mobile Menu Button -->
@@ -88,9 +107,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { Menu, X } from 'lucide-vue-next'
-import { Link } from '@inertiajs/vue3'
+import { computed, ref } from 'vue'
+import { Link, usePage, router } from '@inertiajs/vue3'
+import { LogOut, Menu, X } from 'lucide-vue-next'
+import { route } from 'ziggy-js';
+
+const page = usePage()
+const user = computed(() => page.props.auth?.user)
 
 const navItems = [
   { label: 'Klasifikasi', href: '#klasifikasi' },
@@ -98,6 +121,10 @@ const navItems = [
   { label: 'Teknologi', href: '#technology' },
   { label: 'F.A.Q', href: '#faq' },
 ]
+
+const handleLogout = () => {
+  router.flushAll();
+};
 
 const hoveredIndex = ref<number | null>(null)
 const mobileMenuOpen = ref(false)
