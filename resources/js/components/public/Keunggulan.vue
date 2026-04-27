@@ -1,5 +1,5 @@
 <template>
-  <section id="features" class="py-24 px-4">
+  <section id="keunggulan" class="py-24 px-4">
     <div class="max-w-6xl mx-auto">
       <div class="text-center mb-16">
         <h2 class="text-3xl sm:text-4xl font-bold text-white mb-4 font-display">Keunggulan Sistem Kami</h2>

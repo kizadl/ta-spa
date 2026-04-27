@@ -41,6 +41,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
+            'role' => 'required|in:user,admin',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
@@ -49,6 +50,7 @@ class UserController extends Controller
             $user = User::create([
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
+                'role' => $validatedData['role'],
                 'password' => Hash::make($validatedData['password']),
             ]);
 
@@ -90,6 +92,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'role' => 'required|in:user,admin',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
         $password = $validatedData['password'];
@@ -102,6 +105,7 @@ class UserController extends Controller
             $update = [
                 'name' => $validatedData['name'],
                 'email' => $validatedData['email'],
+                'role' => $validatedData['role'],
             ];
             if ($password) {
                 $update['password'] = $password;

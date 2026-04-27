@@ -31,6 +31,22 @@
                 </div>
 
                 <div class="flex flex-col gap-2">
+                    <Label for="role">Role</Label>
+                    <Select v-model="form.role">
+                        <SelectTrigger class="w-full">
+                            <SelectValue placeholder="Pilih Role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="user">User</SelectItem>
+                            <SelectItem value="admin">Admin</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    <p v-if="form.errors.role" class="mt-1 text-sm text-red-500">
+                        {{ form.errors.role }}
+                    </p>
+                </div>
+
+                <div class="flex flex-col gap-2">
                     <Label for="password">Password</Label>
                     <div class="relative">
                         <Input id="password" :type="showPassword ? 'text' : 'password'" v-model="form.password" placeholder="Masukkan password" />
@@ -89,8 +105,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { MultipleSelect } from '@/components/ui/multiple-select';
-import { SelectSearch } from '@/components/ui/select-search';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useForm } from '@inertiajs/vue3';
 import { Eye, EyeOff, UserPlus } from 'lucide-vue-next';
 import { computed, ref } from 'vue';
@@ -102,6 +117,7 @@ const showPasswordConfirmation = ref(false);
 const form = useForm({
     name: '',
     email: '',
+    role: '',
     password: '',
     password_confirmation: '',
 });

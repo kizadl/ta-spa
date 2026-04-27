@@ -112,6 +112,12 @@ const changePage = (page: number) => {
                                     {{ sortOrder === 'asc' ? '↑' : '↓' }}
                                 </span>
                             </TableHead>
+                            <TableHead class="cursor-pointer" @click="sortBy('role')">
+                                Role
+                                <span v-if="sortField === 'role'" class="ml-1">
+                                    {{ sortOrder === 'asc' ? '↑' : '↓' }}
+                                </span>
+                            </TableHead>
                             <TableHead class="text-center">Aksi</TableHead>
                         </TableRow>
                     </TableHeader>
@@ -125,6 +131,11 @@ const changePage = (page: number) => {
                                 <div class="font-medium">{{ user.name }}</div>
                             </TableCell>
                             <TableCell>{{ user.email }}</TableCell>
+                            <TableCell>
+                                <div class="font-medium">
+                                    {{ user.role === 'admin' ? 'Admin' : 'User' }}
+                                </div>
+                            </TableCell>
                             <TableCell>
                                 <div class="flex items-center justify-center gap-2">
                                     <UserEdit :user="user" />
