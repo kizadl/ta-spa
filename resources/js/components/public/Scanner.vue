@@ -79,12 +79,33 @@
         </div>
 
         <transition enter-active-class="transition duration-500 ease-out" enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100">
-          <div v-if="predictionResult" class="mt-8 p-8 rounded-3xl bg-emerald-600 shadow-[0_0_50px_-12px_rgba(16,185,129,0.5)] text-center relative overflow-hidden">
+          <div 
+            v-if="predictionResult" 
+            class="mt-8 p-8 rounded-3xl shadow-[0_0_50px_-12px_rgba(16,185,129,0.5)] text-center relative overflow-hidden transition-colors duration-500"
+            :class="parseFloat(predictionResult.confidence.replace('%', '')) >= 90 
+              ? 'bg-emerald-600 shadow-emerald-500/50' 
+              : 'bg-red-600 shadow-red-500/50'"
+          >
             <div class="relative z-10">
               <p class="text-xs font-black text-emerald-100 uppercase tracking-[0.3em] mb-2">Hasil Klasifikasi AI</p>
-              <h4 class="text-5xl font-black text-white italic mb-2 tracking-tighter">{{ predictionResult.label }}</h4>
-              <div class="inline-block px-4 py-1.5 bg-black/20 rounded-full backdrop-blur-md">
-                <span class="text-emerald-500 font-bold text-sm uppercase tracking-widest">Confidence: {{ predictionResult.confidence }}</span>
+              <h4 class="text-5xl font-black text-white italic mb-4 tracking-tighter">{{ predictionResult.label }}</h4>
+              
+              <div class="flex flex-wrap justify-center gap-3">
+                <div class="px-4 py-1.5 bg-black/20 rounded-full backdrop-blur-md border border-white/10">
+                  <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest">Confidence: {{ predictionResult.confidence }}</span>
+                </div>
+                
+                <div 
+                  class="px-4 py-1.5 rounded-full backdrop-blur-md border flex items-center gap-2"
+                  :class="parseFloat(predictionResult.confidence.replace('%', '')) >= 90 
+                    ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-200' 
+                    : 'bg-red-500/20 border-red-500/50 text-red-200'"
+                >
+                  <div :class="['w-1.5 h-1.5 rounded-full', parseFloat(predictionResult.confidence.replace('%', '')) >= 90 ? 'bg-emerald-400' : 'bg-red-400']"></div>
+                  <span class="font-bold text-xs uppercase tracking-widest">
+                    {{ parseFloat(predictionResult.confidence.replace('%', '')) >= 90 ? 'Berhasil' : 'Gagal' }}
+                  </span>
+                </div>
               </div>
             </div>
             <Bean class="absolute -right-10 -bottom-10 w-40 h-40 text-white/10 rotate-12" />

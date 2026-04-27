@@ -11,7 +11,8 @@ class Classification extends Model
         'user_id',
         'image_path',
         'result',
-        'confidence'
+        'confidence',
+        'status'
     ];
 
     // Relasi ke User (Satu klasifikasi dimiliki satu User)

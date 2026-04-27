@@ -132,6 +132,15 @@ const toggleScanner = () => {
                                 {{ new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) }}
                             </div>
                             <h3 class="text-xl font-black text-emerald-600 dark:text-emerald-500 italic truncate leading-none">{{ item.result }}</h3>
+                            <div 
+                                class="mt-2 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border"
+                                :class="(item.status === 'Berhasil' || (!item.status && Number(item.confidence) >= 90)) 
+                                    ? 'bg-emerald-50 text-emerald-600 border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800' 
+                                    : 'bg-red-50 text-red-600 border-red-200 dark:bg-red-950/30 dark:text-red-400 dark:border-red-800'"
+                            >
+                                <div :class="['w-1.5 h-1.5 rounded-full mr-1.5', (item.status === 'Berhasil' || (!item.status && Number(item.confidence) >= 90)) ? 'bg-emerald-500' : 'bg-red-500']"></div>
+                                {{ item.status || (Number(item.confidence) >= 90 ? 'Berhasil' : 'Gagal') }}
+                            </div>
                         </div>
                         <div class="text-right">
                             <p class="text-[9px] font-bold text-zinc-400 uppercase tracking-widest">Confidence</p>
@@ -142,7 +151,8 @@ const toggleScanner = () => {
                     <div class="space-y-2">
                         <div class="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
                             <div 
-                                class="h-full bg-emerald-500 rounded-full transition-all duration-1000"
+                                class="h-full rounded-full transition-all duration-1000"
+                                :class="(item.status === 'Berhasil' || (!item.status && Number(item.confidence) >= 90)) ? 'bg-emerald-500' : 'bg-red-500'"
                                 :style="{ width: item.confidence + '%' }"
                             ></div>
                         </div>

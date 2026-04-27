@@ -27,7 +27,9 @@ const props = defineProps<{
     user: User,
     chartData: Array<{ result: string, total: number }>,
     recentHistory: Array<any>,
-    totalScan: number
+    totalScan: number,
+    avgAccuracy: number,
+    successRate: number
 }>();
 
 // Konfigurasi Warna & Data untuk Pie Chart
@@ -49,6 +51,7 @@ const chartOptions = {
         }
     }
 };
+
 </script>
 
 <template>
@@ -77,7 +80,27 @@ const chartOptions = {
                     <p class="text-xs text-muted-foreground">Akumulasi seluruh pemindaian</p>
                 </CardContent>
             </Card>
-            </div>
+
+            <Card>
+                <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle class="text-sm font-medium">Rata-rata Akurasi</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div class="text-2xl font-bold text-emerald-600">{{ avgAccuracy }}%</div>
+                    <p class="text-xs text-muted-foreground">Dari klasifikasi berstatus berhasil</p>
+                </CardContent>
+            </Card>
+
+            <Card>
+                <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle class="text-sm font-medium">Tingkat Keberhasilan</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div class="text-2xl font-bold text-blue-600">{{ successRate }}%</div>
+                    <p class="text-xs text-muted-foreground">Persentase status berhasil dari total scan</p>
+                </CardContent>
+            </Card>
+        </div>
 
         <div class="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card class="col-span-1 lg:col-span-3">

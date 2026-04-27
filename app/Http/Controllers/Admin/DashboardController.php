@@ -34,11 +34,20 @@ class DashboardController extends Controller
         // Hitung Total Scan (sudah terfilter role)
         $totalScan = (clone $query)->count();
 
+        // Rata-rata akurasi dari yang berhasil
+        $avgAccuracy = (clone $query)->where('status', 'Berhasil')->avg('confidence') ?? 0;
+
+        // Tingkat keberhasilan (Total Berhasil / Total Scan)
+        $totalBerhasil = (clone $query)->where('status', 'Berhasil')->count();
+        $successRate = $totalScan > 0 ? ($totalBerhasil / $totalScan) * 100 : 0;
+
         return inertia('admin/Dashboard', [
             'user' => $user,
             'chartData' => $chartData,
             'recentHistory' => $recentHistory,
             'totalScan' => $totalScan,
+            'avgAccuracy' => round($avgAccuracy, 2),
+            'successRate' => round($successRate, 2),
         ]);
     }
 }

@@ -44,11 +44,15 @@ class ClassificationController extends Controller
             // 2. Jika sukses, simpan gambar dan hasil ke database
             $path = $image->store('classifications', 'public');
 
+            $confidence = (float) filter_var($data['confidence'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            $status = $confidence >= 90 ? 'Berhasil' : 'Gagal';
+
             Classification::create([
                 'user_id' => auth()->id() ?? null,
                 'image_path' => $path,
                 'result' => $data['label'],
-                'confidence' => (float) filter_var($data['confidence'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION),
+                'confidence' => $confidence,
+                'status' => $status,
             ]);
 
             return response()->json([
