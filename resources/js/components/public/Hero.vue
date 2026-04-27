@@ -54,6 +54,7 @@
             :src="avatar"
             :alt="`Avatar ${index + 1}`"
             class="w-10 h-10 rounded-full border-2 border-zinc-950 object-cover"
+            loading="lazy"
           />
         </div>
         <p class="text-sm text-zinc-500">

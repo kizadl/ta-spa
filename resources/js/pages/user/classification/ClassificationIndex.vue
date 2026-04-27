@@ -64,6 +64,32 @@ const toggleScanner = () => {
     }
 };
 
+const getResultColorText = (result: string) => {
+    switch (result?.toLowerCase()) {
+        case 'honey':
+            return 'text-amber-600 dark:text-amber-500';
+        case 'washed':
+            return 'text-blue-600 dark:text-blue-500';
+        case 'natural':
+            return 'text-emerald-600 dark:text-emerald-500';
+        default:
+            return 'text-emerald-600 dark:text-emerald-500';
+    }
+};
+
+const getResultColorBar = (result: string) => {
+    switch (result?.toLowerCase()) {
+        case 'honey':
+            return 'bg-amber-500';
+        case 'washed':
+            return 'bg-blue-500';
+        case 'natural':
+            return 'bg-emerald-500';
+        default:
+            return 'bg-emerald-500';
+    }
+};
+
 </script>
 
 <template>
@@ -120,6 +146,7 @@ const toggleScanner = () => {
                     <img 
                         :src="'/storage/' + item.image_path" 
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                        loading="lazy"
                     />
                 </div>
 
@@ -131,7 +158,7 @@ const toggleScanner = () => {
                                 <Calendar class="w-3 h-3" />
                                 {{ new Date(item.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) }}
                             </div>
-                            <h3 class="text-xl font-black text-emerald-600 dark:text-emerald-500 italic truncate leading-none">{{ item.result }}</h3>
+                            <h3 class="text-xl font-black italic truncate leading-none" :class="getResultColorText(item.result)">{{ item.result }}</h3>
                             <div 
                                 class="mt-2 inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider border"
                                 :class="(item.status === 'Berhasil' || (!item.status && Number(item.confidence) >= 90)) 
@@ -152,7 +179,7 @@ const toggleScanner = () => {
                         <div class="h-1.5 w-full bg-zinc-100 dark:bg-zinc-800 rounded-full overflow-hidden">
                             <div 
                                 class="h-full rounded-full transition-all duration-1000"
-                                :class="(item.status === 'Berhasil' || (!item.status && Number(item.confidence) >= 90)) ? 'bg-emerald-500' : 'bg-red-500'"
+                                :class="getResultColorBar(item.result)"
                                 :style="{ width: item.confidence + '%' }"
                             ></div>
                         </div>

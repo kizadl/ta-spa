@@ -53,7 +53,7 @@
                 </template>
 
                 <template v-else>
-                  <img :src="imagePreview" class="absolute inset-0 w-full h-full object-cover" />
+                  <img :src="imagePreview" class="absolute inset-0 w-full h-full object-cover" loading="lazy" />
                   <div class="absolute inset-0 bg-black/40 opacity-0 group-hover/upload:opacity-100 transition-opacity duration-300 flex items-center justify-center backdrop-blur-[2px]">
                     <span class="bg-black/60 text-white px-4 py-2 rounded-full text-sm font-medium">Klik untuk mengganti</span>
                   </div>

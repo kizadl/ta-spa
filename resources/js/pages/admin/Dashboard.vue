@@ -36,11 +36,27 @@ const props = defineProps<{
 const chartConfig = computed(() => ({
     labels: props.chartData.map(item => item.result),
     datasets: [{
-        backgroundColor: ['#eab308', '#22c55e', '#3b82f6'], // Honey (Yellow), Natural (Green), Washed (Blue)
+        backgroundColor: props.chartData.map(item => {
+            switch (item.result?.toLowerCase()) {
+                case 'honey': return '#f59e0b'; // Amber-500
+                case 'washed': return '#3b82f6'; // Blue-500
+                case 'natural': return '#10b981'; // Emerald-500
+                default: return '#94a3b8'; // Slate-400
+            }
+        }),
         data: props.chartData.map(item => item.total),
         borderWidth: 1
     }]
 }));
+
+const getResultColorClass = (result: string) => {
+    switch (result?.toLowerCase()) {
+        case 'honey': return 'text-amber-600 dark:text-amber-500';
+        case 'washed': return 'text-blue-600 dark:text-blue-500';
+        case 'natural': return 'text-emerald-600 dark:text-emerald-500';
+        default: return 'text-muted-foreground';
+    }
+};
 
 const chartOptions = {
     responsive: true,
@@ -133,11 +149,13 @@ const chartOptions = {
                             </thead>
                             <tbody class="[&_tr:last-child]:border-0">
                                 <tr v-for="item in recentHistory" :key="item.id" class="border-b transition-colors hover:bg-muted/50">
-                                    <td class="p-4 align-middle">
-                                        {{ new Date(item.created_at).toLocaleDateString('id-ID') }}
+                                    <td class="p-4 align-middle text-muted-foreground">
+                                        {{ new Date(item.created_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) }}
                                     </td>
-                                    <td class="p-4 align-middle font-medium uppercase">{{ item.result }}</td>
-                                    <td class="p-4 align-middle">{{ item.confidence }}%</td>
+                                    <td class="p-4 align-middle font-black italic tracking-tight" :class="getResultColorClass(item.result)">
+                                        {{ item.result }}
+                                    </td>
+                                    <td class="p-4 align-middle font-medium">{{ item.confidence }}%</td>
                                 </tr>
                                 <tr v-if="recentHistory.length === 0">
                                     <td colspan="3" class="p-4 text-center text-muted-foreground">Tidak ada data.</td>

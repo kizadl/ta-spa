@@ -34,6 +34,11 @@ const user = computed(() => page.props.auth.user);
         href: route('admin.users.index'),
         icon: Users,
     },
+    {
+        title: 'History Klasifikasi',
+        href: route('admin.classifications.index'),
+        icon: ScanSearch,
+    },
 ];
 
 const userNavItems: NavItem[] = [
