@@ -1,0 +1,81 @@
+import os
+import numpy as np
+from flask import Flask, request, jsonify
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing.image import img_to_array
+from PIL import Image
+from rembg import remove
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)  # Izinkan semua origin mengakses API ini
+
+# 1. Load Model (Pastikan file ini satu folder dengan app.py nanti)
+MODEL_PATH = 'best_model.keras'
+model = load_model(MODEL_PATH)
+classes = ['honey', 'natural', 'washed']
+
+# 2. Fungsi Preprocessing (Harus sama persis dengan saat training)
+def preprocess_image(input_img):
+    # Hapus background & buat latar hitam
+    output_rgba = remove(input_img)
+    black_bg = Image.new("RGB", output_rgba.size, (0, 0, 0))
+    black_bg.paste(output_rgba, mask=output_rgba.split()[3]) 
+    
+    # Resize ke 224x224 sesuai EfficientNetB0
+    final_img = black_bg.resize((224, 224))
+    
+    # Konversi ke Array dan tambah dimensi batch (1, 224, 224, 3)
+    img_array = img_to_array(final_img)
+    img_array = np.expand_dims(img_array, axis=0)
+    return img_array
+
+@app.route('/predict', methods=['POST'])
+def predict():
+    # Menyesuaikan dengan formData.append('image', ...) dari Scanner.vue
+    if 'image' not in request.files:
+        return jsonify({"status": "ERROR", "message": "File gambar tidak ditemukan"}), 400
+        
+    image_file = request.files['image']
+    try:
+        img = Image.open(image_file.stream).convert("RGBA")
+        processed_img = preprocess_image(img)
+        
+        # Prediksi
+        preds = model.predict(processed_img)[0]
+        confidence = float(np.max(preds))
+        predicted_class = classes[np.argmax(preds)]
+        
+        # Hitung Entropy (Mengukur tingkat kebingungan model)
+        entropy = -np.sum(preds * np.log(preds + 1e-9))
+        
+        # --- LOGIKA PENYARINGAN (Threshold & Entropy) ---
+        # Jika entropy > 0.8, berarti model bingung (probabilitas terbagi-bagi)
+        if entropy > 0.85:
+            return jsonify({
+                "status": "DITOLAK",
+                "pesan": "Sistem bingung. Mohon pastikan foto adalah biji kopi tunggal yang jelas.",
+                "entropy_score": round(entropy, 4)
+            }), 200
+
+        # Jika keyakinan di bawah 75% (threshold)
+        if confidence < 0.70:
+            return jsonify({
+                "status": "TIDAK YAKIN",
+                "pesan": f"Model menduga {predicted_class}, tapi kurang yakin ({confidence*100:.1f}%).",
+                "confidence": str(round(confidence * 100, 2)) # <--- BUNGKUS DENGAN str() DI SINI
+            }), 200
+
+        # Lolos verifikasi
+        return jsonify({
+            "status": "SUKSES",
+            "label": predicted_class,
+            "confidence": str(round(confidence * 100, 2)), # <--- BUNGKUS DENGAN str() DI SINI
+            "pesan": f"Biji kopi teridentifikasi sebagai {predicted_class}."
+        }), 200
+
+    except Exception as e:
+        return jsonify({"status": "ERROR", "message": str(e)}), 500
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5001)

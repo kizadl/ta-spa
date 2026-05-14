@@ -28,7 +28,7 @@ class ClassificationController extends Controller
         $image = $request->file('image');
 
         try {
-            // 1. Kirim ke AI Server untuk prediksi
+            // 1. Kirim ke AI Server (Flask)
             $response = Http::attach(
                 'image',
                 file_get_contents($image),
@@ -41,27 +41,31 @@ class ClassificationController extends Controller
 
             $data = $response->json();
 
-            // 2. Jika sukses, simpan gambar dan hasil ke database
+            // 2. SIMPAN KE DB (BAIK BERHASIL MAUPUN DITOLAK)
             $path = $image->store('classifications', 'public');
-
-            $confidence = (float) filter_var($data['confidence'], FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
-            $status = $confidence >= 90 ? 'Berhasil' : 'Gagal';
+            $confidence = (float) filter_var($data['confidence'] ?? 0, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION);
+            
+            // Tentukan status untuk Database
+            $dbStatus = ($data['status'] === 'BERHASIL') ? 'Berhasil' : 'Ditolak';
 
             Classification::create([
                 'user_id' => auth()->id() ?? null,
                 'image_path' => $path,
-                'result' => $data['label'],
+                'result' => $data['label'] ?? 'Unknown',
                 'confidence' => $confidence,
-                'status' => $status,
+                'status' => $dbStatus,
             ]);
 
+            // 3. KEMBALIKAN KE VUE (Bawa serta 'status' asli dari Flask)
             return response()->json([
-                'label' => $data['label'],
-                'confidence' => $data['confidence'],
-                'message' => 'Hasil klasifikasi berhasil disimpan'
+                'label' => $data['label'] ?? 'Unknown',
+                'confidence' => $data['confidence'] ?? '0',
+                'message' => $data['pesan'] ?? 'Hasil klasifikasi selesai.',
+                'status' => $data['status'] // INI PENTING UNTUK SINKRONISASI
             ]);
+
         } catch (\Exception $e) {
-            return response()->json(['error' => 'Terjadi kesalahan: ' . $e->getMessage()], 500);
+            return response()->json(['error' => 'Terjadi kesalahan internal: ' . $e->getMessage()], 500);
         }
     }
     public function destroy(Classification $classification)

@@ -29,7 +29,8 @@ const props = defineProps<{
     recentHistory: Array<any>,
     totalScan: number,
     avgAccuracy: number,
-    successRate: number
+    successRate: number,
+    totalUser: number,
 }>();
 
 // Konfigurasi Warna & Data untuk Pie Chart
@@ -38,9 +39,9 @@ const chartConfig = computed(() => ({
     datasets: [{
         backgroundColor: props.chartData.map(item => {
             switch (item.result?.toLowerCase()) {
-                case 'honey': return '#f59e0b'; // Amber-500
-                case 'washed': return '#3b82f6'; // Blue-500
-                case 'natural': return '#10b981'; // Emerald-500
+                case 'honey': return '#f59e0b'; // Amber-500 
+                case 'wash': return '#10b981'; // Blue-500 
+                case 'natural': return '#713600'; // Emerald-500  
                 default: return '#94a3b8'; // Slate-400
             }
         }),
@@ -86,7 +87,17 @@ const chartOptions = {
             </CardHeader>
         </Card>
 
-        <div class="grid gap-4 md:grid-cols-3">
+        <div class="grid gap-4 md:grid-cols-4">
+            <Card>
+                <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle class="text-sm font-medium">Total Pengguna</CardTitle>
+                </CardHeader>
+                <CardContent>
+                    <div class="text-2xl font-bold">{{ totalUser }}</div>
+                    <p class="text-xs text-muted-foreground">Akumulasi seluruh pengguna</p>
+                </CardContent>
+            </Card>
+            
             <Card>
                 <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
                     <CardTitle class="text-sm font-medium">Total Scan</CardTitle>

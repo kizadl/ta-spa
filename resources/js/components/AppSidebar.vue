@@ -48,7 +48,7 @@ const userNavItems: NavItem[] = [
         icon: LayoutGrid,
     },
     {
-        title: 'Klasifikasi',
+        title: 'Riwayat Klasifikasi',
         href: route('classifications.index'),
         icon: ScanSearch,
     },
@@ -73,18 +73,7 @@ const navItems = computed(() => {
 //     });
 // });
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Repository',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: FolderGit2,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
-];
+
 </script>
 
 <template>
@@ -106,7 +95,6 @@ const footerNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter :items="footerNavItems" />
             <NavUser />
         </SidebarFooter>
     </Sidebar>

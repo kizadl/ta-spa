@@ -81,31 +81,45 @@
         <transition enter-active-class="transition duration-500 ease-out" enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100">
           <div 
             v-if="predictionResult" 
-            class="mt-8 p-8 rounded-3xl shadow-[0_0_50px_-12px_rgba(16,185,129,0.5)] text-center relative overflow-hidden transition-colors duration-500"
-            :class="parseFloat(predictionResult.confidence.replace('%', '')) >= 90 
-              ? 'bg-emerald-600 shadow-emerald-500/50' 
-              : 'bg-red-600 shadow-red-500/50'"
+            class="mt-8 p-8 rounded-3xl text-center relative overflow-hidden transition-colors duration-500 shadow-lg"
+            :class="statusInfo?.cardClass"
           >
             <div class="relative z-10">
-              <p class="text-xs font-black text-emerald-100 uppercase tracking-[0.3em] mb-2">Hasil Klasifikasi AI</p>
-              <h4 class="text-5xl font-black text-white italic mb-4 tracking-tighter">{{ predictionResult.label }}</h4>
-              
-              <div class="flex flex-wrap justify-center gap-3">
-                <div class="px-4 py-1.5 bg-black/20 rounded-full backdrop-blur-md border border-white/10">
-                  <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest">Confidence: {{ predictionResult.confidence }}</span>
-                </div>
+              <div :class="predictionResult.status === 'DITOLAK' ? 'flex flex-col md:flex-row items-center justify-center gap-8' : ''">
                 
-                <div 
-                  class="px-4 py-1.5 rounded-full backdrop-blur-md border flex items-center gap-2"
-                  :class="parseFloat(predictionResult.confidence.replace('%', '')) >= 90 
-                    ? 'bg-emerald-500/20 border-emerald-500/50 text-emerald-200' 
-                    : 'bg-red-500/20 border-red-500/50 text-red-200'"
-                >
-                  <div :class="['w-1.5 h-1.5 rounded-full', parseFloat(predictionResult.confidence.replace('%', '')) >= 90 ? 'bg-emerald-400' : 'bg-red-400']"></div>
-                  <span class="font-bold text-xs uppercase tracking-widest">
-                    {{ parseFloat(predictionResult.confidence.replace('%', '')) >= 90 ? 'Berhasil' : 'Gagal' }}
-                  </span>
+                <!-- KIRI: CONTOH FOTO JIKA DITOLAK -->
+                <div v-if="predictionResult.status === 'DITOLAK'" class="flex-1 w-full max-w-sm mx-auto bg-black/20 p-6 rounded-2xl border border-white/10 text-left">
+                  <p class="text-sm text-white font-bold mb-3 text-center">Contoh Foto yang Benar:</p>
+                  <img src="/pict_example.jpg" alt="Contoh Foto Biji Kopi" class="w-full rounded-xl shadow-sm border border-white/20" loading="lazy" />
                 </div>
+
+                <!-- KANAN / TENGAH: HASIL PREDIKSI -->
+                <div class="flex-1 w-full max-w-sm mx-auto flex flex-col justify-center">
+                  <p class="text-xs font-black text-white/70 uppercase tracking-[0.3em] mb-2">Hasil Klasifikasi AI</p>
+                  <h4 class="text-5xl font-black text-white mb-4 tracking-tighter">{{ predictionResult.label }}</h4>
+                  
+                  <div class="flex flex-wrap justify-center gap-3">
+                    <div class="px-4 py-1.5 bg-black/20 rounded-full backdrop-blur-md border border-white/10">
+                      <span class="text-white font-bold text-xs uppercase tracking-widest">Confidence: {{ predictionResult.confidence }}</span>
+                    </div>
+                    
+                    <div 
+                      class="px-4 py-1.5 rounded-full backdrop-blur-md border flex items-center gap-2"
+                      :class="statusInfo?.badgeClass"
+                    >
+                      <div :class="['w-1.5 h-1.5 rounded-full', statusInfo?.dotClass]"></div>
+                      <span class="font-bold text-xs uppercase tracking-widest">
+                        {{ statusInfo?.text }}
+                      </span>
+                    </div>
+                  </div>
+
+                  <!-- Menampilkan Probabilitas -->
+                  <div v-if="predictionResult.details" class="mt-6 text-sm text-white/80 whitespace-pre-line text-left bg-black/20 p-4 rounded-xl border border-white/10 w-full">
+                    {{ predictionResult.details }}
+                  </div>
+                </div>
+
               </div>
             </div>
             <Bean class="absolute -right-10 -bottom-10 w-40 h-40 text-white/10 rotate-12" />
@@ -118,15 +132,39 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { router } from '@inertiajs/vue3'
 import { route } from 'ziggy-js'
 import { Upload, Plus, X, Loader2, Bean } from 'lucide-vue-next'
 
 const imagePreview = ref<string | null>(null)
 const selectedFile = ref<File | null>(null)
-const predictionResult = ref<{ label: string, confidence: string } | null>(null)
+const predictionResult = ref<{ label: string, confidence: string, details?: string, status?: string } | null>(null)
 const isLoading = ref(false)
+
+const statusInfo = computed(() => {
+  if (!predictionResult.value) return null
+  
+  // Membaca status langsung dari Backend!
+  const statusAI = predictionResult.value.status 
+
+  if (statusAI === 'BERHASIL') {
+    return {
+      text: 'Berhasil',
+      cardClass: 'bg-emerald-600 shadow-[0_0_50px_-12px_rgba(16,185,129,0.5)]',
+      badgeClass: 'bg-emerald-500/20 border-emerald-500/50 text-emerald-200',
+      dotClass: 'bg-emerald-400'
+    }
+  } else {
+    // Berlaku untuk 'DITOLAK'
+    return {
+      text: 'Ditolak',
+      cardClass: 'bg-red-600 shadow-[0_0_50px_-12px_rgba(220,38,38,0.5)]',
+      badgeClass: 'bg-red-500/20 border-red-500/50 text-red-200',
+      dotClass: 'bg-red-400'
+    }
+  }
+})
 
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement
@@ -167,7 +205,9 @@ const startClassification = async () => {
     const data = await response.json()
     predictionResult.value = {
       label: data.label,
-      confidence: data.confidence
+      confidence: data.confidence + '%', // Tambah % biar rapi di UI
+      details: data.message,
+      status: data.status // Simpan status dari Laravel/Flask
     }
 
     // Refresh data jika di Inertia context (dashboard)
@@ -176,6 +216,12 @@ const startClassification = async () => {
     }
   } catch (error: any) {
     console.error(error)
+    predictionResult.value = {
+      label: 'Gagal',
+      confidence: '0%',
+      details: error.message || 'Terjadi kesalahan saat klasifikasi',
+      status: 'DITOLAK' // Beri status DITOLAK agar UI langsung memerah
+    }
   } finally {
     isLoading.value = false
   }

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Classification; // Import model Classification
 use Illuminate\Support\Facades\DB;
+use App\Models\User;
 
 class DashboardController extends Controller
 {
@@ -41,6 +42,8 @@ class DashboardController extends Controller
         $totalBerhasil = (clone $query)->where('status', 'Berhasil')->count();
         $successRate = $totalScan > 0 ? ($totalBerhasil / $totalScan) * 100 : 0;
 
+        $totalUser = User::where('role', 'user')->count();
+
         return inertia('admin/Dashboard', [
             'user' => $user,
             'chartData' => $chartData,
@@ -48,6 +51,7 @@ class DashboardController extends Controller
             'totalScan' => $totalScan,
             'avgAccuracy' => round($avgAccuracy, 2),
             'successRate' => round($successRate, 2),
+            'totalUser' => $totalUser,
         ]);
     }
 }
