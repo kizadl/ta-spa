@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Public\ClassificationController;
 use App\Http\Controllers\Admin\ClassificationController as AdminClassificationController;
+use App\Models\Classification;
 
 Route::get('dashboard', function () {
     if (auth()->user()->role === 'admin') {
@@ -17,6 +18,7 @@ Route::get('dashboard', function () {
 Route::get('/', function () {
     return inertia('public/Home', [
         'canRegister' => Features::enabled(Features::registration()),
+        'totalClassifications' => Classification::count(),
     ]);
 })->name('home');
 

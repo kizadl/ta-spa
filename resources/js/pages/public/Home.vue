@@ -1,7 +1,7 @@
 <template>
   <div class="bg-background text-foreground min-h-screen">
     <Navbar />
-    <Hero />
+    <Hero :total-classifications="totalClassifications" />
     <Logo />
     <Scanner  />
     <Keunggulan />
@@ -21,4 +21,8 @@ import Scanner from '@/components/public/Scanner.vue'
 import Teknologi from '@/components/public/Teknologi.vue' 
 import FAQ from '@/components/public/FAQ.vue'
 import FinalCta from '@/components/public/FinalCta.vue'
+
+defineProps<{
+  totalClassifications?: number
+}>()
 </script>

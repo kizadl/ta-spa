@@ -33,6 +33,7 @@
       <!-- CTAs -->
       <div class="flex flex-col sm:flex-row items-center justify-center gap-4 mb-16">
         <button
+          @click="scrollToScanner"
           class="shimmer-btn bg-white text-zinc-950 hover:bg-zinc-200 rounded-full px-8 py-3 text-base font-medium shadow-lg shadow-white/10 flex items-center gap-2"
         >
           Mulai Klasifikasi
@@ -47,7 +48,7 @@
 
       <!-- Social Proof -->
       <div class="flex flex-col items-center gap-4">
-        <div class="flex items-center -space-x-3">
+        <!-- <div class="flex items-center -space-x-3">
           <img
             v-for="(avatar, index) in avatars"
             :key="index"
@@ -56,9 +57,9 @@
             class="w-10 h-10 rounded-full border-2 border-zinc-950 object-cover"
             loading="lazy"
           />
-        </div>
+        </div> -->
         <p class="text-sm text-zinc-500">
-          Telah digunakan oleh <span class="text-zinc-300 font-medium">2,000+</span> orang
+          Telah digunakan <span class="text-zinc-300 font-medium">{{ totalClassifications ? totalClassifications.toLocaleString('id-ID') : '0' }}</span> kali
         </p>
       </div>
     </div>
@@ -67,6 +68,14 @@
 
 <script setup lang="ts">
 import { ArrowRight } from 'lucide-vue-next'
+
+defineProps<{
+  totalClassifications?: number
+}>()
+
+const scrollToScanner = () => {
+  document.getElementById('klasifikasi')?.scrollIntoView({ behavior: 'smooth' })
+}
 
 const avatars = [
   '/professional-headshot-1.png',
