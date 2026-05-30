@@ -2,7 +2,7 @@
   <div class="bg-background text-foreground min-h-screen">
     <Navbar />
     <Hero :total-classifications="totalClassifications" />
-    <Logo />
+    <!-- <Logo /> -->
     <Scanner  />
     <Keunggulan />
     <Teknologi />
@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import Navbar from '@/components/public/Navbar.vue'
 import Hero from '@/components/public/Hero.vue'
-import Logo from '@/components/public/Logo.vue'
+// import Logo from '@/components/public/Logo.vue'
 import Keunggulan from '@/components/public/Keunggulan.vue' 
 import Scanner from '@/components/public/Scanner.vue'
 import Teknologi from '@/components/public/Teknologi.vue' 
